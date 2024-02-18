@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link th:href="@{/css/min.css}" rel="stylesheet">
+    <title th:text="${film.name}"></title>
+</head>
+<body>
+<div class="wrapper">
+    <header th:insert="~{blocks/header :: header}"></header>
+    <div class="main">
+        <div class="slider-wrapper">
+            <div class="film-one">
+                <div class="button-b">
+                    <button class="button-film" th:text="${film.name}">
+                    </button>
+                </div>
+                <div>
+                    <span><span th:text="${film.year}"></span>г</span>
+                    <span th:each="genre: ${genres}" th:if="${film.genre == genre.id}" th:text="${genre.name}">
+                            </span>
+                </div>
+                <div>
+                    <span><span th:text="${film.duration}"></span>мин</span>
+                </div>
+                <div class="film-image">
+                    <img th:src="@{/img/images/{filmName}(filmName=${film.fileName})}" alt="film">
+                    <div class="film-age">
+                        <span class="wrap-age"><span th:text="${film.minimalAge}"></span>+</span>
+                    </div>
+                </div>
+                <div th:text="${film.description}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:insert="~{blocks/footer :: footer}"></footer>
+</div>
+</body>
+</html>

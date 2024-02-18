@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link th:href="@{/css/min.css}" rel="stylesheet">
+    <title>Сессии</title>
+</head>
+<body>
+<div class="wrapper">
+    <header th:insert="~{blocks/header :: header}"></header>
+    <div class="main">
+        <div class="slider-wrapper">
+            <div class="films-wrapper-session">
+                <div class="buttons">
+                    <a class="button-a" th:href="@{/filmSessions/{sessionDate}(sessionDate=20240208)}">
+                        <button class="button"
+                                th:classappend="${#httpServletRequest.requestURI == '/filmSessions/20240208'} ? active : a">
+                            Сегодня
+                        </button>
+                    </a>
+                    <a class="button-a" th:href="@{/filmSessions/{sessionDate}(sessionDate=20240209)}">
+                        <button class="button"
+                                th:classappend="${#httpServletRequest.requestURI == '/filmSessions/20240209'} ? active : a">
+                            Завтра
+                        </button>
+                    </a>
+                    <a class="button-a" th:href="@{/filmSessions/{sessionDate}(sessionDate=20240210)}">
+                        <button class="button"
+                                th:classappend="${#httpServletRequest.requestURI == '/filmSessions/20240210'} ? active : a">
+                            Послезавтра
+                        </button>
+                    </a>
+                    <a class="button-a" th:href="@{/filmSessions/{sessionDate}(sessionDate=20240211)}">
+                        <button class="button"
+                                th:classappend="${#httpServletRequest.requestURI == '/filmSessions/20240211'} ? active : a">
+                            Послепослезавтра
+                        </button>
+                    </a>
+                </div>
+                <div th:each="filmsSession: ${filmsSessions}">
+                    <div class="timing">
+                        <a th:href="@{/tickets/{sessionId}(sessionId=${filmsSession.id})}">
+                            <div class="timing-child" th:if="${timeNow < filmsSession.startTime.toLocalTime() &&
+            #httpServletRequest.requestURI == '/filmSessions/20240208' ||
+            #httpServletRequest.requestURI != '/filmSessions/20240208'}">
+                                <div class="session-time"
+                                     th:text="${#temporals.format(filmsSession.startTime, 'HH:mm')}"></div>
+                                <div class="session-time"
+                                     th:text="${#temporals.format(filmsSession.endTime, 'HH:mm')}"></div>
+                            </div>
+                        </a>
+                        <div class="timing-child" th:if="${timeNow > filmsSession.startTime.toLocalTime() &&
+            #httpServletRequest.requestURI == '/filmSessions/20240208'}">
+                            <div class="session-time">Сеанс завершён</div>
+                        </div>
+                        <div class="timing-child">
+                            <a th:href="@{/tickets/{sessionId}(sessionId=${filmsSession.id})}">
+                                <div class="film-session-name" th:each="film: ${films}"
+                                     th:if="${filmsSession.filmId == film.id}"
+                                     th:text="${film.name}">
+                                </div>
+                                <div th:each="film: ${films}" class="timing">
+                                <span class="session-span" th:if="${filmsSession.filmId == film.id}">
+                                    <span><span th:text="${film.minimalAge}"></span>+</span>
+                                </span>
+                                    <span class="session-span" th:each="genre: ${genres}"
+                                          th:if="${filmsSession.filmId == film.id && film.genre == genre.id}"
+                                          th:text="${genre.name}">
+                                </span>
+                                </div>
+                                <div class="timing">
+                                    <span class="session-price"><span th:text="${filmsSession.price}"></span>р</span>
+                                    <span class="session-price" th:each="hall: ${halls}"
+                                          th:if="${hall.id == filmsSession.hallsId}"
+                                          th:text="${hall.name}">
+                                </span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:insert="~{blocks/footer :: footer}"></footer>
+</div>
+</body>
+</html>

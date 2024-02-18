@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link th:href="@{/css/slider.css}" rel="stylesheet">
+    <link th:href="@{/css/min.css}" rel="stylesheet">
+    <title>Cinema</title>
+</head>
+<body>
+<div class="wrapper">
+    <header th:insert="~{blocks/header :: header}"></header>
+    <div class="slider-wrapper">
+        <div class="sim-slider">
+            <ul class="sim-slider-list">
+                <li><img th:src="@{/img/slider-img/no-image.gif}" alt="screen"></li>
+                <li class="sim-slider-element"><img th:src="@{/img/slider-img/kinop.jpg}" alt="0"></li>
+                <li class="sim-slider-element"><img th:src="@{/img/slider-img/pushkin.jpg}" alt="1"></li>
+                <li class="sim-slider-element"><img th:src="@{/img/slider-img/online.jpg}" alt="2"></li>
+            </ul>
+            <div class="sim-slider-arrow-left"></div>
+            <div class="sim-slider-arrow-right"></div>
+            <div class="sim-slider-dots"></div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="slider-wrapper">
+            <div class="films-wrapper">
+                <div class="wrap-film" th:each="film: ${films}">
+
+                    <div class="film-icon">
+                        <a th:href="@{/films/{filmId}(filmId=${film.id})}">
+                            <img th:src="@{/img/images/{filmName}(filmName=${film.fileName})}" alt="film">
+                        </a>
+                    </div>
+                    <div class="age">
+                        <span class="wrap-age"><span th:text="${film.minimalAge}"></span>+</span>
+                    </div>
+                    <div class="name">
+                        <a th:text="${film.name}" th:href="@{/films/{filmId}(filmId=${film.id})}">
+                        </a>
+                    </div>
+                    <div class="genre" th:each="genre: ${genres}"
+                         th:if="${film.genre == genre.id}">
+                        <span th:text="${genre.name}"></span>
+                    </div>
+                    <div class="sessions-parent">
+                        <div class="session-empty" th:if="${filmsNum.contains(film.id) == false}">
+                            <div>Сеансов на сегодня нет</div>
+                        </div>
+                        <div class="sessions-child" th:each="filmsSession: ${filmsSessions}"
+                             th:if="${filmsSession.filmId == film.id && timeNow < filmsSession.startTime.toLocalTime()}">
+                            <a th:href="@{/tickets/{sessionId}(sessionId=${filmsSession.id})}">
+                                <div class="time">
+                                    <span th:text="${#temporals.format(filmsSession.startTime, 'HH:mm')}"></span>
+                                </div>
+                                <div th:text="${filmsSession.price}"></div>
+                                <div th:each="hall: ${halls}" th:if="${hall.id == filmsSession.hallsId}"
+                                     th:text="${hall.name}">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="films-bottom">
+                    <h2 class="soon">Скоро в кино</h2>
+                    <div class="films-bottom-wrapper">
+                        <div class="wrap-film" th:each="film: ${notRealized}">
+                            <a th:href="@{/films/{filmId}(filmId=${film.id})}">
+                                <div class="film-bottom-icon">
+                                    <img th:src="@{/img/images/{filmName}(filmName=${film.fileName})}" alt="film">
+                                </div>
+                                <div class="bottom-age">
+                                    <span class="wrap-age"><span th:text="${film.minimalAge}"></span>+</span>
+                                </div>
+                                <div class="bottom-name">
+                                    <a th:text="${film.name}" th:href="@{/films/{filmId}(filmId=${film.id})}">
+                                    </a>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:insert="~{blocks/footer :: footer}"></footer>
+</div>
+<script type="text/javascript" th:src="@{/js/min.js}"></script>
+</body>
+</html>

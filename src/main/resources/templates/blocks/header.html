@@ -1,0 +1,21 @@
+<div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
+    <nav class="fixed-top">
+        <ul class="top_ul">
+            <li><a href="/index"><img th:src="@{/img/movie.png}" alt="movie"></a></li>
+            <li><span><a th:href="@{/filmSessions/{sessionDate}(sessionDate=20240208)}">Расписание сеансов</a></span></li>
+            <li><span><a th:href="@{/films/list}">Кинотека</a></span></li>
+            <li th:if="${user.fullName == null}">
+                <span>
+                    <a th:href="@{/users/register}">Регистрация</a>
+                    <a th:href="@{/users/login}">Войти</a>
+                </span>
+            </li>
+            <li th:if="${user.fullName != null}">
+                <span>
+                    <a href="#" th:text="${user.fullName}"></a>
+                    <a th:href="@{/users/logout}">Выйти</a>
+                </span>
+            </li>
+        </ul>
+    </nav>
+</div>

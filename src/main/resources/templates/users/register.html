@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/css/min.css}" rel="stylesheet">
+    <title>Регистрация</title>
+</head>
+<body>
+<div class="wrapper">
+    <header th:insert="~{blocks/header :: header}"></header>
+    <div class="main">
+        <div class="slider-wrapper">
+            <div class="register-one">
+                <form class="form-register" th:action="@{/users/register}" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <div><b>Имя</b></div>
+                        <input type="text" class="form-control" id="name" name="fullName" placeholder="Мойша" required>
+                    </div>
+                    <div class="mb-3">
+                        <div><b>Почта</b></div>
+                        <input type="text" class="form-control" id="email" name="email" placeholder="ivan@mail.ru"
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <div><b>Пароль</b></div>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="12345"
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <div class="col-6"></div>
+                        <div class="button-register">
+                            <div>
+                                <div class="col-6"><a class="button-user" th:href="@{/index}">Отмена</a></div>
+                                <div class="col-6">
+                                    <button class="button-user" type="submit">Сохранить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <footer th:insert="~{blocks/footer :: footer}"></footer>
+</div>
+</body>
+</html>
