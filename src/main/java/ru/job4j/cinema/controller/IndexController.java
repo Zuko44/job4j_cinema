@@ -1,6 +1,5 @@
 package ru.job4j.cinema.controller;
 
-import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +16,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@ThreadSafe
 @Controller
 public class IndexController {
     private final SessionService sessionService;
@@ -33,7 +31,6 @@ public class IndexController {
         this.hallService = hallService;
     }
 
-    //@GetMapping({"/", "/index"})
     @GetMapping({"/index"})
     public String getIndex(Model model) {
         var between = sessionService.findByDate(20240208);
