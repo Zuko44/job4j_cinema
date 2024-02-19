@@ -46,7 +46,8 @@ public class TicketController {
         var hall = hallService.findById(session.get().getHallsId()).get();
         List<Integer> foo = new ArrayList<>();
         for (int i = 0; i < tickets.size(); i++) {
-            foo.add((tickets.get(i).getRow() - 1) * hall.getPlaceCount() + tickets.get(i).getPlace());
+            Ticket ticket = tickets.get(i);
+            foo.add((ticket.getRow() - 1) * hall.getPlaceCount() + ticket.getPlace());
         }
         model.addAttribute("filmSession", session.get());
         model.addAttribute("film", filmService.findById(session.get().getFilmId()).get());
