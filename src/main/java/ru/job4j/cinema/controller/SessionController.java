@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.job4j.cinema.model.Film;
 import ru.job4j.cinema.model.Session;
 import ru.job4j.cinema.service.FilmService;
 import ru.job4j.cinema.service.GenreService;
@@ -14,10 +13,9 @@ import ru.job4j.cinema.service.HallService;
 import ru.job4j.cinema.service.SessionService;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ThreadSafe
 @Controller
@@ -44,10 +42,8 @@ public class SessionController {
             return "errors/404";
         }
         List<Integer> filmsId = sessions.stream().map(Session::getFilmId).distinct().toList();
-        Collection<Film> films = new ArrayList<>();
-        for (int film : filmsId) {
-            films.add(filmService.findById(film).get());
-        }
+        var allFilms = filmService.findAll();
+        var films = allFilms.stream().filter(all -> filmsId.contains(all.getId())).collect(Collectors.toList());
         Collections.sort(sessions);
         model.addAttribute("filmsSessions", sessions);
         model.addAttribute("halls", hallService.findAll());
